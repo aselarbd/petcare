@@ -1,7 +1,7 @@
 from .Serializer import AppointmentSerializer
 from .models import Appointment
 from Clinic.models import TakenSlots
-from User.models import User
+from User.models import PetCareUser
 
 
 class AppointmentService:
@@ -13,7 +13,7 @@ class AppointmentService:
 
         userID = data["userID"]
         try:
-            user = User.objects.get(pk=userID)
+            user = PetCareUser.objects.get(pk=userID)
 
             vetID = data["vetID"],
             clinicID = data["clinicID"]
@@ -34,7 +34,7 @@ class AppointmentService:
                     return serializer.data
                 return serializer.errors
 
-        except User.DoesNotExist:
+        except PetCareUser.DoesNotExist:
             msg = {"error": " Please resister with the system"}
             serializer = AppointmentSerializer(data=msg)
             if serializer.is_valid():

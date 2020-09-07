@@ -1,13 +1,19 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.utils.translation import ugettext_lazy as _
+from .managers import CustomUserManager
 
 
-class User(models.Model):
-    userID = models.AutoField(primary_key=True)
-    firstName = models.CharField(max_length=100)
-    lastName = models.CharField(max_length=100)
-    contactNo = models.IntegerField()
-    petName = models.CharField(max_length=50, blank=True)
-    _created_at = models.DateTimeField(auto_now_add=True)
+class PetCareUser(AbstractUser):
+    username = None
+    email = models.EmailField(_('email address'), unique=True)
+    contactNo = models.IntegerField(blank=True, null=True)
+    petName = models.CharField(max_length=50, blank=True, null=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
 
     def __str__(self):
-        return self.firstName + ' - ' + self.lastName
+        return self.email

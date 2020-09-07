@@ -1,29 +1,37 @@
-from .Serializer import UserSerializer
-from .models import User
+from .Serializer import PetCareUserSerializer
+from .models import PetCareUser
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 
 
 class UserService:
 
     @staticmethod
     def getAll():
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
+        users = PetCareUser.objects.all()
+        serializer = PetCareUserSerializer(users, many=True)
         return serializer.data
 
     @staticmethod
     def postUser(request):
         data = request.data
-        serializer = UserSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return serializer.data
-        return serializer.errors
+        try:
+            serializer = PetCareUserSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                msg = {"message": "User created successfully.", "email": serializer.data["email"], "Access-token": ""}
+                return msg
+            return serializer.errors
+        except:
+            msg = {"error": " Please provide valid details to register with the system (email, password, first_name, "
+                            "last_name, contactNo, petName)"}
+            return msg
 
     @staticmethod
     def getUserByID(request, ID):
         try:
-            user = User.objects.get(pk=ID)
-        except User.DoesNotExist:
+            user = PetCareUser.objects.get(pk=ID)
+        except PetCareUser.DoesNotExist:
             pass
-        serializer = UserSerializer(user)
+        serializer = PetCareUserSerializer(user)
         return serializer.data
