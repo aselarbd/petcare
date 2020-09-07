@@ -1,0 +1,25 @@
+database:
+  name: 'db.sqlite3'
+  engine: 'django.db.backends.sqlite3'
+
+APP:
+  SECRET_KEY: '-5y6v_wx$(s8id6@m8rooil=tc+6zl#$_i&+#=$7k=stti#b))'
+
+api:
+  title: 'api'
+  version: 'v1'
+
+  backend:
+
+    clinicAPI:
+      name: 'clinic'
+      sub:
+        basic: 'basic'
+        vet: 'vet'
+        availability: 'availability'
+
+    appointmentAPI:
+      name: 'appointment'
+
+    userAPI:
+      name: 'user'
